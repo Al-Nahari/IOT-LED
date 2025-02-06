@@ -1,5 +1,5 @@
 const SENSOR_CHANNEL_ID = '2831041';
-const SENSOR_READ_API_KEY = 'THINGSPEAK_SENSOR_READ_API_KEY';
+const SENSOR_READ_API_KEY = 'H2OM7NLFQNX8D0KU';
 const COMMAND_CHANNEL_ID = '2831041';
 const COMMAND_WRITE_API_KEY = '7BNW1EZMDWQ0ZEOZ';
 const COMMAND_READ_API_KEY = 'H2OM7NLFQNX8D0KU';
@@ -15,18 +15,21 @@ document.getElementById('commandForm').addEventListener('submit', async (e) => {
   
   try {
     const response = await fetch(url);
-    const result = await response.json();
-    if(result && result.entry_id) {
+    // نتوقع أن ترجع ThingSpeak نصًا وليس JSON
+    const resultText = await response.text();
+    // إذا كانت النتيجة "0" فهذا يعني حدوث خطأ (مثلاً تجاوز حد التحديث)
+    if(resultText !== "0") {
       alert('تم إرسال الأمر بنجاح!');
       loadCommandHistory();
     } else {
-      alert('حدث خطأ أثناء إرسال الأمر!');
+      alert('حدث خطأ أثناء إرسال الأمر! ربما تم تجاوز حد التحديث (15 ثانية).');
     }
   } catch (error) {
     console.error('Error:', error);
     alert('حدث خطأ أثناء الإرسال!');
   }
 });
+
 
 // تحميل أحدث بيانات الحساس من قناة الحساس
 async function updateSensorData() {
