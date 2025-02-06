@@ -39,8 +39,7 @@ async function updateSensorData() {
     const data = await response.json();
     if(data && data.field1 && data.created_at) {
       document.getElementById('sensorData').innerHTML = `
-        القيمة: ${data.field1} فولت<br>
-        الوقت: ${new Date(data.created_at).toLocaleString()}
+        القيمة: ${data.field1} <br>
       `;
     } else {
       document.getElementById('sensorData').innerHTML = 'لا توجد بيانات حالية';
